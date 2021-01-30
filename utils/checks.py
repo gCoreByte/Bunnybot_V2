@@ -4,3 +4,7 @@ def check_owner(ctx):
         return True
     return False
 
+# check if user has manage_roles perm
+def check_manage_roles(ctx):
+    return ctx.author.guild_permissions.manage_roles
+

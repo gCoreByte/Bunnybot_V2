@@ -30,30 +30,42 @@ class Streaming(commands.Cog):
     @commands.command()
     def add_streamer(self, ctx, name):
         # check if given name is id:
-            #TODO
         try:
-            member = find_by_partial(name, ctx.guild)
-        except TooManyMatches:
-            await ctx.send(f"There are too many matches for the name {name}", delay=15)
-            return
-        except NoMatchFound:
-            await ctx.send(f"There were no matches for the name {name}", delay=15)
-            return
+            name = int(name)
+            member = discord.utils.get(ctx.guild.members, id=name)
+            if member is None:
+                ctx.send(f"There are no matches for id {name}, looking for user named this", delay=15)
+                raise Exception
+        except:
+            try:
+                member = find_by_partial(name, ctx.guild)
+            except TooManyMatches:
+                await ctx.send(f"There are too many matches for the name {name}", delay=15)
+                return
+            except NoMatchFound:
+                await ctx.send(f"There were no matches for the name {name}", delay=15)
+                return
+
         # lets add the new streamers ID to the database
         # TODO: add streamer to database
 
     @commands.check(check_owner)
     @commands.command()
     def remove_streamer(self, ctx, name):
-        # check if given name is id:
-        # TODO
         try:
-            member = find_by_partial(name, ctx.guild)
-        except TooManyMatches:
-            await ctx.send(f"There are too many matches for the name {name}", delay=15)
-            return
-        except NoMatchFound:
-            await ctx.send(f"There were no matches for the name {name}", delay=15)
-            return
+            name = int(name)
+            member = discord.utils.get(ctx.guild.members, id=name)
+            if member is None:
+                ctx.send(f"There are no matches for id {name}, looking for user named this", delay=15)
+                raise Exception
+        except:
+            try:
+                member = find_by_partial(name, ctx.guild)
+            except TooManyMatches:
+                await ctx.send(f"There are too many matches for the name {name}", delay=15)
+                return
+            except NoMatchFound:
+                await ctx.send(f"There were no matches for the name {name}", delay=15)
+                return
         # remove the streamers ID from the database
         # TODO: remove streamer from database
