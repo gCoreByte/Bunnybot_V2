@@ -12,3 +12,4 @@ def find_by_partial(name, guild):
             raise NoMatchFound
     # there should only be a single member in the list now, this must be the member
     return member[0]
+

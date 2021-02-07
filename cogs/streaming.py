@@ -28,7 +28,7 @@ class Streaming(commands.Cog):
 
     @commands.check(check_owner)
     @commands.command()
-    def add_streamer(self, ctx, name):
+    async def add_streamer(self, ctx, name):
         # check if given name is id:
         try:
             name = int(name)
@@ -51,7 +51,7 @@ class Streaming(commands.Cog):
 
     @commands.check(check_owner)
     @commands.command()
-    def remove_streamer(self, ctx, name):
+    async def remove_streamer(self, ctx, name):
         try:
             name = int(name)
             member = discord.utils.get(ctx.guild.members, id=name)

@@ -1,6 +1,9 @@
+import datetime
+
+from discord import Embed
 from discord.ext import commands
 from discord.ext.commands import ExtensionNotFound
-
+import psutil
 from utils.checks import check_owner
 
 
@@ -14,7 +17,7 @@ class Maintenance(commands.Cog):
 
     @commands.command()
     @commands.check(check_owner)
-    def reload_cog(self, ctx, cog):
+    async def reload_cog(self, ctx, cog):
         try:
             self.bot.reload_extension(f"cogs.{cog}")
         except ExtensionNotFound as e:
@@ -26,10 +29,18 @@ class Maintenance(commands.Cog):
 
     @commands.command()
     @commands.check(check_owner)
-    def status(self, ctx):
+    async def status(self, ctx):
         #TODO:
         # database status
-        # cpu load
-        # memory
-        # uptime
-        pass
+        cpu_load = psutil.cpu_percent()
+        mem_stats = psutil.swap_memory()
+        uptime = datetime.datetime.now() - self.bot.start_time
+        embed = Embed(
+            title="Bot status",
+            timestamp=datetime.datetime.now(),
+            colour=0x967bb6
+        )
+        embed.add_field(name="CPU load", value=f"{cpu_load}%", inline=False)
+        embed.add_field(name="Memory stats", value=f"{mem_stats[3]}%", inline=False)
+        embed.add_field(name="Uptime", value=str(uptime - datetime.timedelta(microseconds=uptime.microseconds)), inline=False)
+        await ctx.send(embed=embed)
