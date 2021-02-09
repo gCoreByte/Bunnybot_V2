@@ -54,9 +54,10 @@ class Streaming(commands.Cog):
             title=f"{before.name} is now streaming!",
             timestamp=datetime.datetime.now(),
             colour=0x967bb6,
-            url=link
+            url=link,
+            description=streaming_obj.url
         )
-        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1024x1024.jpg")
+        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg")
         # send the embed
         await channel.send(content="@everyone",embed=embed)
 
