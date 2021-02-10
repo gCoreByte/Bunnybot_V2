@@ -2,6 +2,7 @@ import datetime
 
 import discord
 from discord.ext import commands
+from discord.ext.commands import MemberConverter
 
 from utils.checks import check_owner
 from utils.database import check_if_connected
@@ -24,14 +25,14 @@ class Streaming(commands.Cog):
         streaming_after = any(isinstance(x, discord.Streaming) for x in after.activities)
         if streaming_before == streaming_after:
             return
-        #TODO: autodelete message when stream over
+        # TODO: autodelete message when stream over
         if not streaming_after:
             return
         # user has just started streaming, check if they are in db
         guild_id = before.guild.id
         self.bot.db = check_if_connected(self.bot.db)
         cursor = self.bot.db.cursor(dictionary=True)
-        cursor.execute(f"SELECT * FROM `{guild_id}` WHERE is_streamer = 1 AND user_id = %s", (before.id, ))
+        cursor.execute(f"SELECT * FROM `{guild_id}` WHERE is_streamer = 1 AND user_id = %s", (before.id,))
         row = cursor.fetchone()
         if row is None:
             return
@@ -56,12 +57,10 @@ class Streaming(commands.Cog):
             colour=0x967bb6,
             url=link
         )
-        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1024x1024.jpg")
+        embed.set_image(
+            url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1024x1024.jpg")
         # send the embed
-        await channel.send(content="@everyone",embed=embed)
-
-
-
+        await channel.send(content="@everyone", embed=embed)
 
     @commands.check(check_owner)
     @commands.command()
@@ -69,11 +68,9 @@ class Streaming(commands.Cog):
         # check if given name is id:
         try:
             name = int(name)
-            member = discord.utils.get(ctx.guild.members, id=name)
-            if member is None:
-                await ctx.send(f"There are no matches for id {name}, looking for user named this", delete_after=15)
-                raise Exception
+            member = await MemberConverter().convert(ctx, name)
         except:
+            await ctx.send(f"There are no matches for {name}, looking for partial name matches", delete_after=15)
             try:
                 member = find_by_partial(name, ctx.guild)
             except TooManyMatches:
@@ -100,11 +97,9 @@ class Streaming(commands.Cog):
     async def remove_streamer(self, ctx, name):
         try:
             name = int(name)
-            member = discord.utils.get(ctx.guild.members, id=name)
-            if member is None:
-                await ctx.send(f"There are no matches for id {name}, looking for user named this", delete_after=15)
-                raise Exception
+            member = await MemberConverter().convert(ctx, name)
         except:
+            await ctx.send(f"There are no matches for {name}, looking for partial name matches", delete_after=15)
             try:
                 member = find_by_partial(name, ctx.guild)
             except TooManyMatches:

@@ -1,4 +1,6 @@
-from utils.exceptions import TooManyMatches, NoMatchFound
+import discord
+
+from utils.exceptions import TooManyMatches, NoMatchFound, NoIDFound
 
 
 # find a member by their partial name

@@ -13,35 +13,35 @@ class Moderation(commands.Cog):
     @commands.command()
     @commands.check(check_manage_roles)
     async def set_member_xp(self, ctx, name, xp):
-        #TODO
+        # TODO
         pass
 
     @commands.command()
     @commands.check(check_manage_roles)
     async def purge(self, ctx, amount=10):
-        #TODO
+        # TODO
         pass
 
     @commands.command()
     @commands.check(check_manage_roles)
     async def mute(self, ctx, name, duration=10, unit="min", reason=None):
-        #TODO
+        # TODO
         pass
 
     @commands.command()
     @commands.check(check_manage_roles)
     async def mute_voice(self, ctx, name, duration=10, unit="min", reason=None):
-        #TODO
+        # TODO
         pass
 
     @commands.command()
     @commands.check(check_manage_roles)
     async def kick(self, ctx, name, reason=None):
-        #TODO
+        # TODO
         pass
 
     @commands.command()
     @commands.check(check_manage_roles)
     async def ban(self, ctx, name, reason=None):
-        #TODO
+        # TODO
         pass

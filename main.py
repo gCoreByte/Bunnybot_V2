@@ -21,7 +21,7 @@ bot.load_extension("cogs.maintenance")
 bot.load_extension("cogs.ranking")
 bot.load_extension("cogs.moderation")
 bot.load_extension("cogs.streaming")
-bot.load_extension("cogs.newmember")
+bot.load_extension("cogs.firstjoin")
 
 # load bot variables
 
