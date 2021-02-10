@@ -1,0 +1,16 @@
+{
+  "twitch" : {
+    "secret": "",
+    "id" : ""
+  },
+  "discord" : {
+    "secret" : "NzkxMTQ3OTY4NDQyMDA3NTky.X-K79g.LCJTOqsFPbguhRXcf3LBy2utISc"
+  },
+  "mysqldb" : {
+    "host" : "192.168.0.136",
+    "username" : "bunnybot",
+    "password" : "bunnybottest",
+    "db" : "bunnybot"
+  },
+  "owners" : ["324151171868786688", "546541858566963231"]
+}

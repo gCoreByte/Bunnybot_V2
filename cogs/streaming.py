@@ -55,18 +55,19 @@ class Streaming(commands.Cog):
         channel_id = cursor.fetchone()["stream_channel"]
         f.write(str(8))
         f.write(str(channel_id))
-        channel = discord.utils.get(before.guild.text_channels, id=channel_id)
+        channel = discord.utils.get(after.guild.text_channels, id=channel_id)
         f.write(str(9))
         # getting link
         f.write(str(10))
-        streaming_obj = None
-        if streaming_after:
-            for i in after.activities:
-                f.write(str(i))
-                if isinstance(i, discord.Streaming):
-                    print(str(11))
-                    streaming_obj = i
-                    break
+        streaming_obj = 0
+        for i in after.activities:
+            f.write(str(i))
+            if isinstance(i, discord.Streaming):
+                print(str("FOUND STREAMING OBJ"))
+                streaming_obj = i
+                break
+        if not isinstance(streaming_obj, discord.Streaming):
+            raise Exception("Streaming obj not found!")
         f.write("BUILDING EMBED\n")
         # build the embed
         f.write(str(12))
