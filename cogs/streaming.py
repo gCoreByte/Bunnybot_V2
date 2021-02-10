@@ -55,10 +55,10 @@ class Streaming(commands.Cog):
             title=f"{before.name} is now streaming!",
             timestamp=datetime.datetime.now(),
             colour=0x967bb6,
-            url=link
+            url=link,
+            description=streaming_obj.url
         )
-        embed.set_image(
-            url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1024x1024.jpg")
+        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg")
         # send the embed
         await channel.send(content="@everyone", embed=embed)
 
@@ -67,7 +67,6 @@ class Streaming(commands.Cog):
     async def add_streamer(self, ctx, name):
         # check if given name is id:
         try:
-            name = int(name)
             member = await MemberConverter().convert(ctx, name)
         except:
             await ctx.send(f"There are no matches for {name}, looking for partial name matches", delete_after=15)
@@ -96,7 +95,6 @@ class Streaming(commands.Cog):
     @commands.command()
     async def remove_streamer(self, ctx, name):
         try:
-            name = int(name)
             member = await MemberConverter().convert(ctx, name)
         except:
             await ctx.send(f"There are no matches for {name}, looking for partial name matches", delete_after=15)

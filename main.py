@@ -1,8 +1,8 @@
 import json
-import os
 import datetime
 import sys
 from pathlib import Path
+import logging
 
 import discord
 from discord.ext import commands
@@ -29,6 +29,15 @@ bot.root_dir = Path(sys.modules["__main__"].__file__).resolve().parent
 bot.db = connect_to_database()
 bot.start_time = datetime.datetime.now()
 bot.owner_ids = set()
+
+# prepare logging
+
+logger = logging.getLogger('discord')
+logger.setLevel(logging.DEBUG)
+handler = logging.FileHandler(filename='discord.log', encoding='utf-8', mode='w')
+handler.setFormatter(logging.Formatter('%(asctime)s:%(levelname)s:%(name)s: %(message)s'))
+logger.addHandler(handler)
+
 # start bot
 
 with open(bot.root_dir / "config" / "config.json") as f:

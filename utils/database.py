@@ -33,6 +33,10 @@ def new_guild_table(guild_id : int, db):
                    "currency INT(11) DEFAULT 0)", (guild_id, ))
     db.commit()
 
+def new_user_joined(guild_id, db, member_id):
+    cursor = db.cursor()
+
+
 def check_if_connected(db):
     if not db:
         db = connect_to_database()
