@@ -20,7 +20,6 @@ class Streaming(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
-        f = open("test1.txt", "a")
         # check if the update is streaming to reduce DB reads
         streaming_before = any(isinstance(x, discord.Streaming) for x in before.activities)
         streaming_after = any(isinstance(x, discord.Streaming) for x in after.activities)
