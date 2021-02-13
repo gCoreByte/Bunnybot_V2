@@ -30,8 +30,6 @@ class Maintenance(commands.Cog):
     @commands.command()
     @commands.check(check_owner)
     async def status(self, ctx):
-        #TODO:
-        # database status
         cpu_load = psutil.cpu_percent()
         mem_stats = psutil.virtual_memory()
         uptime = datetime.datetime.now() - self.bot.start_time
