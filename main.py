@@ -8,7 +8,7 @@ import discord
 from discord.ext import commands
 from utils.database import connect_to_database
 # initialize intents
-
+from utils.utility_functions import get_twitch_token
 
 intents = discord.Intents.default()
 intents.members = True
@@ -29,6 +29,7 @@ bot.root_dir = Path(sys.modules["__main__"].__file__).resolve().parent
 bot.db = connect_to_database()
 bot.start_time = datetime.datetime.now()
 bot.owner_ids = set()
+bot.token = ""
 
 # prepare logging
 
@@ -45,5 +46,8 @@ with open(bot.root_dir / "config" / "config.json") as f:
     secret = data["discord"]["secret"]
     for owner_id in data["owners"]:
         bot.owner_ids.add(int(owner_id))
+    bot.twitch_secret = data["twitch"]["secret"]
+    bot.twitch_id = data["twitch"]["id"]
+
 bot.run(secret)
 

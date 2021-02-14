@@ -2,13 +2,14 @@ import datetime
 import random
 
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
 from discord.ext.commands import MemberConverter
+import requests
 
 from utils.checks import check_owner
 from utils.database import check_if_connected
 from utils.exceptions import TooManyMatches, NoMatchFound
-from utils.utility_functions import find_by_partial
+from utils.utility_functions import find_by_partial, get_twitch_token
 
 
 def setup(bot):
@@ -18,6 +19,14 @@ def setup(bot):
 class Streaming(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
+        self.renew_bot_token.start()
+
+
+    @tasks.loop(hours=72)
+    async def renew_bot_token(self):
+        self.bot.token = get_twitch_token(self.bot.twitch_secret, self.bot.twitch_id)
+
+
 
     @commands.Cog.listener()
     async def on_member_update(self, before, after):
@@ -58,8 +67,9 @@ class Streaming(commands.Cog):
             description=streaming_obj.url
         )
         # we use random to force a new image, not use the cached one
-        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg?{random.randint(1, 5000)}")
-        #embed.set_image(url=streaming_obj.)
+        #embed.set_image(
+        #    url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg?{random.randint(1, 5000)}")
+        embed.set_image(url=self.get_twitch_user(streaming_obj.twitch_name)["data"][0]["profile_image_url"])
         # send the embed
         await channel.send(content="@everyone", embed=embed)
 
@@ -118,3 +128,15 @@ class Streaming(commands.Cog):
             await ctx.send("Removed user from DB.", delete_after=15)
         except:
             await ctx.send("Error removing user from DB. This shouldn't happen!")
+
+    def get_twitch_user(self, name, id=False):
+        req_url = "https://api.twitch.tv/helix/users"
+        if id:
+            params = {"id": name}
+        else:
+            params = {"login": name}
+        r = requests.get(req_url, params=params, headers={
+            "client-id": self.bot.twitch_id,
+            "authorization" : f"Bearer {self.bot.token}"
+        })
+        return r.json()

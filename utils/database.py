@@ -38,10 +38,12 @@ def new_user_joined(guild_id, db, member_id):
 
 
 def check_if_connected(db):
+    cursor = db.cursor(buffered=True)
     try:
-        cursor = db.cursor()
         cursor.execute("SELECT NOW()")
+        cursor.close()
         return db
     except:
+        cursor.close()
         return connect_to_database()
 
