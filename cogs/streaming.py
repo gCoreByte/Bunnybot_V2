@@ -1,4 +1,5 @@
 import datetime
+import random
 
 import discord
 from discord.ext import commands
@@ -56,7 +57,9 @@ class Streaming(commands.Cog):
             url=link,
             description=streaming_obj.url
         )
-        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg")
+        # we use random to force a new image, not use the cached one
+        embed.set_image(url=f"https://static-cdn.jtvnw.net/previews-ttv/live_user_{streaming_obj.twitch_name}-1920x1080.jpg?{random.randint(1, 5000)}")
+        #embed.set_image(url=streaming_obj.)
         # send the embed
         await channel.send(content="@everyone", embed=embed)
 
